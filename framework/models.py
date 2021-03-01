@@ -13,27 +13,30 @@ class Model(models.Model):
         return ['id'] + list(cls._meta.fields)
 
     def to_dict(self):
-        cls = self.__class__
+        # cls = self.__class__
         dic = {}
         for key in self._fields():
-            cls_attr = getattr(cls, key)
+            # cls_attr = getattr(cls, key)
             inst_attr = getattr(self, key)
-            if isinstance(cls_attr, fields.DateField):
+            if key == 'create_at' or key == 'last_online_at':
                 if inst_attr:
-                    # inst_attr = inst_attr.astimezone(cst_tz)
-                    inst_attr = inst_attr.strftime(self.date_format)
-            elif isinstance(cls_attr, fields.DatetimeField):
-                if inst_attr:
-                    # inst_attr = inst_attr.astimezone(cst_tz)
                     inst_attr = inst_attr.strftime(self.datetime_format)
-            elif isinstance(cls_attr, fields.TimeDeltaField):
-                if inst_attr:
-                    inst_attr = inst_attr.total_seconds
-            elif isinstance(cls_attr, fields.ForeignKeyField):
-                key = key + '_id'
-                inst_attr = getattr(self, key)
-            elif isinstance(cls_attr, fields.ManyToManyField):
-                continue
+            # if isinstance(cls_attr, fields.DateField):
+            #     if inst_attr:
+            #         # inst_attr = inst_attr.astimezone(cst_tz)
+            #         inst_attr = inst_attr.strftime(self.date_format)
+            # elif isinstance(cls_attr, fields.DatetimeField):
+            #     if inst_attr:
+            #         # inst_attr = inst_attr.astimezone(cst_tz)
+            #         inst_attr = inst_attr.strftime(self.datetime_format)
+            # elif isinstance(cls_attr, fields.TimeDeltaField):
+            #     if inst_attr:
+            #         inst_attr = inst_attr.total_seconds
+            # elif isinstance(cls_attr, fields.ForeignKeyField):
+            #     key = key + '_id'
+            #     inst_attr = getattr(self, key)
+            # elif isinstance(cls_attr, fields.ManyToManyField):
+            #     continue
             dic[key] = inst_attr
         return dic
 
